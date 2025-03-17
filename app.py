@@ -91,8 +91,6 @@
 #     token = auth_token.authentication() # Get the token
 #     app(token)  # Pass the token to the app function
 
-
-
 import streamlit as st
 import base64
 from generate_functions import generate_session_id, detect_language_from_text, call_dialogflow_api, translate_text, synthesize_speech, remove_links_source_and_quotes
@@ -104,11 +102,8 @@ AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 
 # --- Streamlit App ---
-def app(token, bearer_token):
-    # Pass the token as an argument
-    # if not token:
-    #     st.error("Failed to get access token. Check service account credentials.")
-    #     return
+def app(bearer_token): 
+    
     st.title("Google Agent")
 
     # Initialize session state variables
@@ -137,11 +132,11 @@ def app(token, bearer_token):
             full_response = ""
 
             # Detect language
-            st.session_state.detected_language = detect_language_from_text(user_message, bearer_token) # Pass the bearer_token
+            st.session_state.detected_language = detect_language_from_text(user_message, bearer_token) # Pass the right token
 
             # Call Dialogflow API
             dialogflow_response = call_dialogflow_api(
-                user_message, st.session_state.session_id, st.session_state.detected_language, bearer_token # Pass the bearer_token
+                user_message, st.session_state.session_id, st.session_state.detected_language, bearer_token # Pass the right token
             )
 
             if dialogflow_response and dialogflow_response.get("queryResult"):
@@ -151,7 +146,7 @@ def app(token, bearer_token):
                     if response.get("text"):
                         text_response = response["text"]["text"][0]
                         translated_text = translate_text(
-                            text_response, st.session_state.detected_language, bearer_token # Pass the bearer_token
+                            text_response, st.session_state.detected_language, bearer_token # Pass the right token
                         )
                         all_text_responses.append(translated_text)
                         full_response += translated_text + " "
@@ -165,7 +160,7 @@ def app(token, bearer_token):
                     text_to_synthesize = remove_links_source_and_quotes(full_response_for_audio)
 
                     audio_content = synthesize_speech(
-                        text_to_synthesize, st.session_state.detected_language, bearer_token # Pass the bearer_token
+                        text_to_synthesize, st.session_state.detected_language, bearer_token # Pass the right token
                     )
                     if audio_content:
                         audio_bytes = base64.b64decode(audio_content)
@@ -174,7 +169,7 @@ def app(token, bearer_token):
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
                 audio_content = synthesize_speech(
-                            full_response, st.session_state.detected_language, bearer_token # Pass the bearer_token
+                            full_response, st.session_state.detected_language, bearer_token # Pass the right token
                         )
                 if audio_content:
                     audio_bytes = base64.b64decode(audio_content)
@@ -183,6 +178,12 @@ def app(token, bearer_token):
             st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
-    token = auth_token.authentication() # Get the token
-    bearer_token = auth_token.get_bearer_token()
-    app(token, bearer_token)  # Pass the token to the app function
+    bearer_token = auth_token.get_bearer_token() #get the bearer token first
+    if not bearer_token:
+        st.error("Failed to get access token. Check service account credentials.")
+    else :
+        id_token = auth_token.authentication() # Get the id token
+        if not id_token:
+            st.error("Unauthenticated")
+        else:
+            app(bearer_token)  # Pass only the bearer token to the app function
