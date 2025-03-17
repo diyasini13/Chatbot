@@ -10,7 +10,7 @@ LOCATION = "global"
 
 # --- Streamlit App ---
 def app(token):  # Pass the token as an argument
-    st.title("Fantasy Cricket Chatbot")
+    st.title("Google Agent")
 
     # Initialize session state variables
     if "session_id" not in st.session_state:
