@@ -108,11 +108,12 @@ def get_bearer_token():
             ]
         )
         st.info(f"Bearer 1:  {creds.token}")
+        st.info(f"Project: { project}")
         auth_req = google.auth.transport.requests.Request()
         creds.refresh(auth_req)
         # print("Bearer " ,creds.token)
         # print("Project: ", project )
-        st.info(f"Project: { project}")
+        
         # Return the access token
         return creds.token
     except Exception as e:
