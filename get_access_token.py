@@ -1,7 +1,7 @@
 import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from google.oauth2.credentials import Credentials
+from google.oauth2 import credentials
 import google.auth
 import streamlit as st
 
@@ -24,14 +24,23 @@ def get_access_token(id_token_string, GOOGLE_CLIENT_ID):
         if idinfo['aud'] != GOOGLE_CLIENT_ID:
             raise ValueError('Wrong audience.')
 
-        # Get the access token from the idinfo
-        access_token = idinfo['access_token'] if 'access_token' in idinfo else None
+        # Get the default credentials
+        creds, project = google.auth.default()
 
-        if access_token:
-            return access_token
-        else:
-            st.error("Access token not found in ID token.")
-            return None
+        # Create a Credentials object from the ID token
+        creds = credentials.Credentials(
+            token=id_token_string,
+            id_token=id_token_string,
+            token_uri="https://oauth2.googleapis.com/token",
+            client_id=GOOGLE_CLIENT_ID,
+            client_secret=""
+        )
+
+        # Refresh the credentials to get an access token
+        creds.refresh(requests.Request())
+
+        # Return the access token
+        return creds.token
 
     except ValueError as e:
         st.error(f"Invalid ID token: {e}")
