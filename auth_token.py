@@ -107,12 +107,12 @@ def get_bearer_token():
                 "https://www.googleapis.com/auth/cloud-texttospeech", # For text to speech
             ]
         )
-        st.info("Bearer 1:  " ,creds.token)
+        st.info(f"Bearer 1:  {creds.token}")
         auth_req = google.auth.transport.requests.Request()
         creds.refresh(auth_req)
-        print("Bearer " ,creds.token)
-        print("Project: ", project )
-        st.info("Project: ", project)
+        # print("Bearer " ,creds.token)
+        # print("Project: ", project )
+        st.info(f"Project: { project}")
         # Return the access token
         return creds.token
     except Exception as e:
