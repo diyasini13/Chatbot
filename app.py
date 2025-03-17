@@ -9,7 +9,11 @@ AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 
 # --- Streamlit App ---
-def app(token):  # Pass the token as an argument
+def app(): 
+    TOKEN = auth_token.authentication()# Pass the token as an argument
+    if not TOKEN:
+        st.error("Failed to get access token. Check service account credentials.")
+        return
     st.title("Google Agent")
 
     # Initialize session state variables
@@ -84,5 +88,5 @@ def app(token):  # Pass the token as an argument
             st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
-    TOKEN = auth_token.authentication()  # Get the token
-    app(TOKEN)  # Pass the token to the app function
+     # Get the token
+    app()  # Pass the token to the app function
