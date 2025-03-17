@@ -1,8 +1,5 @@
 import streamlit as st
-import requests
 import base64
-import random
-import io
 from generate_functions import generate_session_id, detect_language_from_text, call_dialogflow_api, translate_text, synthesize_speech, remove_links_source_and_quotes
 import auth_token
 
