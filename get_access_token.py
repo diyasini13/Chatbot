@@ -24,20 +24,14 @@ def get_access_token(id_token_string, GOOGLE_CLIENT_ID):
         if idinfo['aud'] != GOOGLE_CLIENT_ID:
             raise ValueError('Wrong audience.')
 
-        # Get default credentials
-        creds, project = google.auth.default()
+        # Get the access token from the idinfo
+        access_token = idinfo['access_token'] if 'access_token' in idinfo else None
 
-        # Create a Credentials object from the ID token
-        credentials = Credentials(
-            token=id_token_string,
-            id_token=id_token_string,
-        )
-
-        # Refresh the credentials to get an access token
-        credentials.refresh(requests.Request())
-
-        # Return the access token
-        return credentials.token
+        if access_token:
+            return access_token
+        else:
+            st.error("Access token not found in ID token.")
+            return None
 
     except ValueError as e:
         st.error(f"Invalid ID token: {e}")
