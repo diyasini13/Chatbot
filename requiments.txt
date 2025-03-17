@@ -1,0 +1,10 @@
+streamlit
+requests
+google-cloud-dialogflow
+google-cloud-translate
+google-cloud-texttospeech
+google-cloud-speech
+streamlit-webrtc
+av
+numpy
+google-cloud-speech
