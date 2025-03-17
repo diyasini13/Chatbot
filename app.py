@@ -10,8 +10,8 @@ LOCATION = "global"
 
 # --- Streamlit App ---
 def app(): 
-    TOKEN = auth_token.authentication()# Pass the token as an argument
-    if not TOKEN:
+    token = auth_token.authentication()# Pass the token as an argument
+    if not token:
         st.error("Failed to get access token. Check service account credentials.")
         return
     st.title("Google Agent")
