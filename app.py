@@ -9,11 +9,11 @@
 # LOCATION = "global"
 
 # # --- Streamlit App ---
-# def app(): 
-#     token = auth_token.authentication()# Pass the token as an argument
-#     if not token:
-#         st.error("Failed to get access token. Check service account credentials.")
-#         return
+# def app(token): 
+#     # Pass the token as an argument
+#     # if not token:
+#     #     st.error("Failed to get access token. Check service account credentials.")
+#     #     return
 #     st.title("Google Agent")
 
 #     # Initialize session state variables
@@ -88,9 +88,8 @@
 #             st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 # if __name__ == "__main__":
-#      # Get the token
-#     app()  # Pass the token to the app function
-
+#     token = auth_token.authentication() # Get the token
+#     app(token)  # Pass the token to the app function
 
 
 
@@ -105,11 +104,11 @@ AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 
 # --- Streamlit App ---
-def main():
-    TOKEN = auth_token.authentication()  # Get the access token
-    if not TOKEN:
-        st.error("Failed to get access token. Check service account credentials.")
-        return
+def app(token, bearer_token):
+    # Pass the token as an argument
+    # if not token:
+    #     st.error("Failed to get access token. Check service account credentials.")
+    #     return
     st.title("Google Agent")
 
     # Initialize session state variables
@@ -138,11 +137,11 @@ def main():
             full_response = ""
 
             # Detect language
-            st.session_state.detected_language = detect_language_from_text(user_message, TOKEN) # Pass the token
+            st.session_state.detected_language = detect_language_from_text(user_message, bearer_token) # Pass the bearer_token
 
             # Call Dialogflow API
             dialogflow_response = call_dialogflow_api(
-                user_message, st.session_state.session_id, st.session_state.detected_language, TOKEN # Pass the token
+                user_message, st.session_state.session_id, st.session_state.detected_language, bearer_token # Pass the bearer_token
             )
 
             if dialogflow_response and dialogflow_response.get("queryResult"):
@@ -152,7 +151,7 @@ def main():
                     if response.get("text"):
                         text_response = response["text"]["text"][0]
                         translated_text = translate_text(
-                            text_response, st.session_state.detected_language, TOKEN # Pass the token
+                            text_response, st.session_state.detected_language, bearer_token # Pass the bearer_token
                         )
                         all_text_responses.append(translated_text)
                         full_response += translated_text + " "
@@ -166,7 +165,7 @@ def main():
                     text_to_synthesize = remove_links_source_and_quotes(full_response_for_audio)
 
                     audio_content = synthesize_speech(
-                        text_to_synthesize, st.session_state.detected_language, TOKEN # Pass the token
+                        text_to_synthesize, st.session_state.detected_language, bearer_token # Pass the bearer_token
                     )
                     if audio_content:
                         audio_bytes = base64.b64decode(audio_content)
@@ -175,7 +174,7 @@ def main():
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
                 audio_content = synthesize_speech(
-                            full_response, st.session_state.detected_language, TOKEN # Pass the token
+                            full_response, st.session_state.detected_language, bearer_token # Pass the bearer_token
                         )
                 if audio_content:
                     audio_bytes = base64.b64decode(audio_content)
@@ -184,4 +183,6 @@ def main():
             st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
-    main()
+    token = auth_token.authentication() # Get the token
+    bearer_token = auth_token.get_bearer_token()
+    app(token, bearer_token)  # Pass the token to the app function
