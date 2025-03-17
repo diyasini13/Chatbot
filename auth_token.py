@@ -98,6 +98,7 @@ def get_bearer_token():
     """Gets a bearer token from the default service account."""
     try:
         # Get the default credentials
+        st.info("Getting bearer token")
         creds, project = google.auth.default(
             scopes=[
                 "https://www.googleapis.com/auth/cloud-platform",  # For general Cloud access
@@ -106,10 +107,12 @@ def get_bearer_token():
                 "https://www.googleapis.com/auth/cloud-texttospeech", # For text to speech
             ]
         )
+        st.info("Bearer 1:  " ,creds.token)
         auth_req = google.auth.transport.requests.Request()
         creds.refresh(auth_req)
         print("Bearer " ,creds.token)
         print("Project: ", project )
+        st.info("Project: ", project)
         # Return the access token
         return creds.token
     except Exception as e:
