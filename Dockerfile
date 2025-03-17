@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Streamlit-specific commands for running the app
-CMD streamlit run app.py --server.enableXsrfProtection false --server.port $PORT auth_token.py
+CMD streamlit run app.py --server.enableXsrfProtection false --server.port $PORT 

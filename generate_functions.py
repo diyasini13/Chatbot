@@ -10,7 +10,7 @@ AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 
 # --- Helper Functions ---
-token = auth_token.authentication()
+
 def generate_session_id(length=6):
     """Generates a random session ID."""
     characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
