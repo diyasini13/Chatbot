@@ -179,6 +179,7 @@ def app(bearer_token):
 
 if __name__ == "__main__":
     bearer_token = auth_token.get_bearer_token() #get the bearer token first
+    print("BEARER TOKEN: ", bearer_token)
     if not bearer_token:
         st.error("Failed to get access token. Check service account credentials.")
     else :

@@ -126,6 +126,8 @@ import os
 from google.oauth2 import id_token
 from google.auth.transport import requests
 import google.auth
+import subprocess
+
 
 project="heroprojectlivedemo"
 def authentication():
@@ -168,25 +170,54 @@ def authentication():
     else:
         return decoded  # Return the valid token
 
-def get_bearer_token():
-    """Gets a bearer token from the default service account."""
-    try:
-        # Get the default credentials
-        st.info("Getting bearer token")
-        creds, project = google.auth.default(
-            scopes=[
-                "https://www.googleapis.com/auth/cloud-platform",  # For general Cloud access
-                "https://www.googleapis.com/auth/dialogflow", # For Dialogflow
-                "https://www.googleapis.com/auth/cloud-translation", # For translation
-                "https://www.googleapis.com/auth/cloud-texttospeech", # For text to speech
-            ]
-        )
-        st.info(f"Bearer 1:  {creds.token}")
-        st.info(f"Project: { project}")
+
+
+# def get_bearer_token():
+#     """Gets a bearer token from the default service account."""
+#     try:
+#         # Get the default credentials
+#         st.info("Getting bearer token")
+#         creds, project = google.auth.default(
+#             scopes=[
+#                 "https://www.googleapis.com/auth/cloud-platform",  # For general Cloud access
+#                 "https://www.googleapis.com/auth/dialogflow", # For Dialogflow
+#                 "https://www.googleapis.com/auth/cloud-translation", # For translation
+#                 "https://www.googleapis.com/auth/cloud-texttospeech", # For text to speech
+#             ]
+#         )
+#         st.info(f"Bearer 1:  {creds.token}")
+#         st.info(f"Project: { project}")
         
-        print("Bearer " ,creds.token)
-        # Return the access token
-        return creds.token
-    except Exception as e:
-        st.error(f"Error getting bearer token: {e}")
+#         print("Bearer " ,creds.token)
+#         # Return the access token
+#         return creds.token
+#     except Exception as e:
+#         st.error(f"Error getting bearer token: {e}")
+#         return None
+
+
+def get_bearer_token():
+    """
+    Retrieves the application default access token using gcloud.
+
+    Returns:
+        str: The access token as a string, or None if an error occurred.
+    """
+    try:
+        result = subprocess.run(
+            ['gcloud', 'auth', 'application-default', 'print-access-token'],
+            capture_output=True,
+            text=True,
+            check=True  # Raise an exception for non-zero exit codes
+        )
+        bearer_token = result.stdout.strip()
+        print("FETCHED TOKEN SUCCESSFULLY")
+        return bearer_token
+    except subprocess.CalledProcessError as e:
+        print(f"Error running gcloud command: {e}")
+        print(f"Stderr: {e.stderr}")
         return None
+    except FileNotFoundError:
+        print("Error: 'gcloud' command not found. Make sure the Google Cloud CLI is installed and in your system's PATH.")
+        return None
+
