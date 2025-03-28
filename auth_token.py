@@ -214,10 +214,10 @@ def get_bearer_token():
         print("FETCHED TOKEN SUCCESSFULLY")
         return bearer_token
     except subprocess.CalledProcessError as e:
-        print(f"Error running gcloud command: {e}")
-        print(f"Stderr: {e.stderr}")
+        st.info(f"Error running gcloud command: {e}")
+        st.info(f"Stderr: {e.stderr}")
         return None
     except FileNotFoundError:
-        print("Error: 'gcloud' command not found. Make sure the Google Cloud CLI is installed and in your system's PATH.")
+        st.info("Error: 'gcloud' command not found. Make sure the Google Cloud CLI is installed and in your system's PATH.")
         return None
 
