@@ -141,8 +141,8 @@ def app():
             st.info(f"Response: {dialogflow_response}")
 
 
-            if dialogflow_response and dialogflow_response["queryResult"]:
-                bot_responses = dialogflow_response["queryResult"]["responseMessages"]
+            if dialogflow_response and dialogflow_response["query_result"]:
+                bot_responses = dialogflow_response["query_result"]["response_messages"]
                 all_text_responses = []
                 for response in bot_responses:
                     if response["text"]:
