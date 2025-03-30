@@ -178,7 +178,8 @@ def app(bearer_token):
             st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
-    bearer_token = auth_token.get_bearer_token() #get the bearer token first
+    # bearer_token = auth_token.get_bearer_token() #get the bearer token first
+    bearer_token = "23123"
     print("BEARER TOKEN: ", bearer_token)
     st.info(f"Bearer token: {bearer_token}")
     if not bearer_token:
