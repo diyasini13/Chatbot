@@ -166,8 +166,8 @@ def app():
                         text_to_synthesize, st.session_state.detected_language # Pass the right token
                     )
                     if audio_content:
-                        audio_bytes = base64.b64decode(audio_content)
-                        st.audio(audio_bytes, format="audio/wav", start_time=0)
+                        # audio_bytes = base64.b64decode(audio_content)
+                        st.audio(audio_content, format="audio/mp3", start_time=0)
             else:
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
