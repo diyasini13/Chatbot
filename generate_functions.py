@@ -14,6 +14,7 @@ PROJECT_ID = "heroprojectlivedemo"
 AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 PARENT = f"projects/{PROJECT_ID}/locations/{LOCATION}"
+INDIAN_LANGUAGES = ["hi", "bn"]
 
 # --- Helper Functions ---
 
@@ -75,9 +76,8 @@ def synthesize_speech(text, language_code):
     client = texttospeech.TextToSpeechClient()
     # Determine voice name based on language code
     voice_name = ""
-    if "-IN" in language_code:
-        voice_name = f"{language_code.replace('-IN', '')}-IN-Wavenet-B"
-        language_code = language_code.replace("-IN", "")
+    if language_code.lower() in INDIAN_LANGUAGES:
+        voice_name = f"{language_code.lower()}-IN-Wavenet-B"
     elif "es" in language_code:
         voice_name = "es-ES-Wavenet-B"
     elif "fr" in language_code:
