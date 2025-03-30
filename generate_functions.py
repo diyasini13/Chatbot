@@ -218,7 +218,7 @@ def generate_session_id(length=6):
     characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
     return "".join(random.choice(characters) for _ in range(length))
 
-def detect_language_from_text(text, token):
+def detect_language_from_text(text):
     """Detects the language of the given text using Google Translate API.
     Args:
         text (str): The input text.
@@ -241,7 +241,7 @@ def detect_language_from_text(text, token):
         st.error(f"Error detecting language: {e}")
         return "en-US"
 
-def translate_text(text, to_language, token):
+def translate_text(text, to_language):
     """Translates the given text to the target language using Google Translate API.
       Args:
         text (str): The input text.
@@ -262,7 +262,7 @@ def translate_text(text, to_language, token):
         st.error(f"Error translating text: {e}")
         return text
 
-def synthesize_speech(text, language_code, token):
+def synthesize_speech(text, language_code):
     """Synthesizes speech from text using Google Text-to-Speech API.
         Args:
         text (str): The input text.
@@ -315,7 +315,7 @@ def synthesize_speech(text, language_code, token):
         st.error(f"Error synthesizing speech: {e}")
         return None
 
-def call_dialogflow_api(user_message, session_id, language_code, token):
+def call_dialogflow_api(user_message, session_id, language_code):
     """Calls the Dialogflow CX API to get the bot's response.
         Args:
         user_message (str): The input text.
@@ -325,7 +325,7 @@ def call_dialogflow_api(user_message, session_id, language_code, token):
     """
     client = dialogflow.SessionsClient()
     session = f"{PARENT}/agents/{AGENT_ID}/sessions/{session_id}"
-    text_input = dialogflow.TextInput(text=user_message, language_code=language_code.split('-')[0])
+    text_input = dialogflow.TextInput(text=user_message)
     query_input = dialogflow.QueryInput(text=text_input)
     try:
         response = client.detect_intent(

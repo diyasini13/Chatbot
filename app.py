@@ -102,7 +102,7 @@ AGENT_ID = "dfa3083e-e038-46c1-a006-7cebcdf11038"
 LOCATION = "global"
 
 # --- Streamlit App ---
-def app(bearer_token): 
+def app(): 
     
     st.title("Google Agent")
 
@@ -132,11 +132,11 @@ def app(bearer_token):
             full_response = ""
 
             # Detect language
-            st.session_state.detected_language = detect_language_from_text(user_message, bearer_token) # Pass the right token
+            st.session_state.detected_language = detect_language_from_text(user_message) # Pass the right token
 
             # Call Dialogflow API
             dialogflow_response = call_dialogflow_api(
-                user_message, st.session_state.session_id, st.session_state.detected_language, bearer_token # Pass the right token
+                user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token
             )
 
             if dialogflow_response and dialogflow_response.get("queryResult"):
@@ -146,7 +146,7 @@ def app(bearer_token):
                     if response.get("text"):
                         text_response = response["text"]["text"][0]
                         translated_text = translate_text(
-                            text_response, st.session_state.detected_language, bearer_token # Pass the right token
+                            text_response, st.session_state.detected_language # Pass the right token
                         )
                         all_text_responses.append(translated_text)
                         full_response += translated_text + " "
@@ -160,7 +160,7 @@ def app(bearer_token):
                     text_to_synthesize = remove_links_source_and_quotes(full_response_for_audio)
 
                     audio_content = synthesize_speech(
-                        text_to_synthesize, st.session_state.detected_language, bearer_token # Pass the right token
+                        text_to_synthesize, st.session_state.detected_language # Pass the right token
                     )
                     if audio_content:
                         audio_bytes = base64.b64decode(audio_content)
@@ -169,7 +169,7 @@ def app(bearer_token):
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
                 audio_content = synthesize_speech(
-                            full_response, st.session_state.detected_language, bearer_token # Pass the right token
+                            full_response, st.session_state.detected_language # Pass the right token
                         )
                 if audio_content:
                     audio_bytes = base64.b64decode(audio_content)
@@ -179,14 +179,17 @@ def app(bearer_token):
 
 if __name__ == "__main__":
     # bearer_token = auth_token.get_bearer_token() #get the bearer token first
-    bearer_token = "23123"
-    print("BEARER TOKEN: ", bearer_token)
-    st.info(f"Bearer token: {bearer_token}")
-    if not bearer_token:
-        st.error("Failed to get access token. Check service account credentials.")
-    else :
-        id_token = auth_token.authentication() # Get the id token
-        if not id_token:
-            st.error("Unauthenticated")
-        else:
-            app(bearer_token)  # Pass only the bearer token to the app function
+    # bearer_token = "23123"
+    # print("BEARER TOKEN: ", bearer_token)
+    # st.info(f"Bearer token: {bearer_token}")
+    # if not bearer_token:
+    #     st.error("Failed to get access token. Check service account credentials.")
+    # else :
+    #     id_token = auth_token.authentication() # Get the id token
+    #     if not id_token:
+    #         st.error("Unauthenticated")
+    #     else:
+    #         app(bearer_token)  # Pass only the bearer token to the app function
+    auth_token.authentication() # Get the id token
+    app()  # Pass only the bearer token to the app function
+    
