@@ -47,24 +47,25 @@ def app():
                 user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token
             )
 
+            st.info(f"RESPONSE: {dialogflow_response}")
 
             if dialogflow_response and dialogflow_response["queryResult"]:
                 bot_responses = dialogflow_response["queryResult"]["responseMessages"]
                 all_text_responses = []
                 for response in bot_responses:
                     try:
-                        if response["text"]:
+                        if 'text' in response:
                             text_response = response["text"]["text"][0]
                             translated_text = translate_text(
                                 text_response, st.session_state.detected_language # Pass the right token
                             )
                             all_text_responses.append(translated_text)
                             full_response += translated_text + " "
-                        else:
-                            st.info(f"Response was: {response}")
-                            full_response = "Sorry, I couldn't understand that."
-                    except Exception as e:
-                        st.info(f"Could not process reponse: {e}")
+                    except:
+                        pass
+                    
+                if len(bot_responses) == 0:
+                    full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
 
                 # Synthesize speech and play automatically
