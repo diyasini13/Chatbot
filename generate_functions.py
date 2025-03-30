@@ -204,6 +204,8 @@ import re
 from google.cloud import translate_v3
 from google.cloud import texttospeech
 from google.cloud import dialogflowcx_v3beta1 as dialogflow
+from google.protobuf.json_format import MessageToDict
+
 
 # --- Configuration ---
 PROJECT_ID = "heroprojectlivedemo"
@@ -331,7 +333,8 @@ def call_dialogflow_api(user_message, session_id, language_code):
         response = client.detect_intent(
             request={"session": session, "query_input": query_input}
         )
-        return response.__dict__
+        response_dict = MessageToDict(response._pb)
+        return response_dict
     except Exception as e:
         st.error(f"Error calling Dialogflow API: {e}")
         return None
