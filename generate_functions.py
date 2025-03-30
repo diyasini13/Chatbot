@@ -80,7 +80,7 @@ def synthesize_speech(text, language_code):
         language_code = language_code.replace("-IN", "")
     elif "es" in language_code:
         voice_name = "es-ES-Wavenet-B"
-    elif "fr" in language_code.contains("fr"):
+    elif "fr" in language_code:
         voice_name = "fr-FR-Wavenet-B"
     elif "de" in language_code:
         voice_name = "de-DE-Wavenet-B"
