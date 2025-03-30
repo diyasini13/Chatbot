@@ -161,7 +161,7 @@ def app():
                     # Remove links, "Source" text, and quotes before synthesizing speech
                     
                     text_to_synthesize = remove_links_source_and_quotes(full_response_for_audio)
-                    st.Info(f"Synthesize: {text_to_synthesize}")
+                    st.info(f"Synthesize: {text_to_synthesize}")
                     audio_content = synthesize_speech(
                         text_to_synthesize, st.session_state.detected_language # Pass the right token
                     )
