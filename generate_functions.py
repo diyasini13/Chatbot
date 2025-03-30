@@ -52,8 +52,8 @@ def translate_text(text, to_language):
         to_language (str): The target language code.
         token (str): The bearer token for API authentication.
     """
-    if to_language == st.session_state.detected_language: 
-        return text
+    # if to_language == st.session_state.detected_language: 
+    #     return text
     client = translate_v3.TranslationServiceClient()
     try:
         response = client.translate_text(
