@@ -1,9 +1,9 @@
 streamlit
 requests
 google-cloud-dialogflow
-google-cloud-translate
+
 google-cloud-texttospeech
-google-cloud-speech
+
 streamlit-webrtc
 av
 numpy
@@ -11,3 +11,6 @@ google-cloud-speech
 python-dotenv==1.0.1
 PyJWT==2.8.0
 google-auth
+google-cloud-dialogflow-cx
+google-cloud-translate
+google-cloud-speech
