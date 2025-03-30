@@ -52,8 +52,6 @@ def translate_text(text, to_language):
         to_language (str): The target language code.
         token (str): The bearer token for API authentication.
     """
-    # if to_language == st.session_state.detected_language: 
-    #     return text
     client = translate_v3.TranslationServiceClient()
     try:
         response = client.translate_text(
@@ -65,7 +63,6 @@ def translate_text(text, to_language):
         )
         return response.translations[0].translated_text
     except Exception as e:
-        st.error(f"Error translating text: {e}")
         return text
 
 def synthesize_speech(text, language_code):
@@ -78,29 +75,29 @@ def synthesize_speech(text, language_code):
     client = texttospeech.TextToSpeechClient()
     # Determine voice name based on language code
     voice_name = ""
-    if language_code.endswith('-US'):
-        voice_name = f"{language_code.replace('-US', '')}-US-Wavenet-D"
-        language_code = language_code.replace("-US", "")
-    elif language_code == "es":
+    if language_code.contains('-IN'):
+        voice_name = f"{language_code.replace('-IN', '')}-IN-Wavenet-B"
+        language_code = language_code.replace("-IN", "")
+    elif language_code.contains("es"):
         voice_name = "es-ES-Wavenet-B"
-    elif language_code == "fr":
+    elif language_code.contains("fr"):
         voice_name = "fr-FR-Wavenet-B"
-    elif language_code == "de":
+    elif language_code.contains("de"):
         voice_name = "de-DE-Wavenet-B"
-    elif language_code == "ja":
+    elif language_code.contains("ja"):
         voice_name = "ja-JP-Wavenet-B"
-    elif language_code == "ko":
+    elif language_code.contains("ko"):
         voice_name = "ko-KR-Wavenet-B"
-    elif language_code == "pt":
+    elif language_code.contains("pt"):
         voice_name = "pt-PT-Wavenet-B"
-    elif language_code == "it":
+    elif language_code.contains("it"):
         voice_name = "it-IT-Wavenet-B"
-    elif language_code == "ru":
+    elif language_code.contains("ru"):
         voice_name = "ru-RU-Wavenet-B"
-    elif language_code == "zh":
+    elif language_code.contains("zh"):
         voice_name = "zh-CN-Wavenet-B"
     else:
-        voice_name = "en-US-Wavenet-D"  # Default to English US if not found
+        voice_name = "en-US-Wavenet-B"  # Default to English US if not found
 
     input_text = texttospeech.SynthesisInput(text=text)
     voice = texttospeech.VoiceSelectionParams(
