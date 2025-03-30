@@ -331,7 +331,6 @@ def call_dialogflow_api(user_message, session_id, language_code):
         response = client.detect_intent(
             request={"session": session, "query_input": query_input}
         )
-        st.info(f"Response: {response}")
         return response.__dict__
     except Exception as e:
         st.error(f"Error calling Dialogflow API: {e}")

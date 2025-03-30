@@ -133,17 +133,19 @@ def app():
 
             # Detect language
             st.session_state.detected_language = detect_language_from_text(user_message) # Pass the right token
-            st.info(f"detectedlng : {st.session_state.detected_language}" )
             # Call Dialogflow API
             dialogflow_response = call_dialogflow_api(
                 user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token
             )
 
-            if dialogflow_response and dialogflow_response.get("queryResult"):
+            st.info(f"Response: {dialogflow_response}")
+
+
+            if dialogflow_response and dialogflow_response["queryResult"]:
                 bot_responses = dialogflow_response["queryResult"]["responseMessages"]
                 all_text_responses = []
                 for response in bot_responses:
-                    if response.get("text"):
+                    if response["text"]:
                         text_response = response["text"]["text"][0]
                         translated_text = translate_text(
                             text_response, st.session_state.detected_language # Pass the right token
