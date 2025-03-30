@@ -47,8 +47,6 @@ def app():
                 user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token
             )
 
-            st.info(f"RESPONSE: {dialogflow_response}")
-
             if dialogflow_response and dialogflow_response["queryResult"]:
                 bot_responses = dialogflow_response["queryResult"]["responseMessages"]
                 all_text_responses = []
@@ -81,7 +79,7 @@ def app():
                     )
                     if audio_content:
                         # audio_bytes = base64.b64decode(audio_content)
-                        st.audio(audio_content, format="audio/mp3", start_time=0)
+                        st.audio(audio_content, format="audio/mp3", start_time=0, autoplay=True)
             else:
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
