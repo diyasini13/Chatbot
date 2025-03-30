@@ -75,26 +75,26 @@ def synthesize_speech(text, language_code):
     client = texttospeech.TextToSpeechClient()
     # Determine voice name based on language code
     voice_name = ""
-    if language_code.contains('-IN'):
+    if "-IN" in language_code:
         voice_name = f"{language_code.replace('-IN', '')}-IN-Wavenet-B"
         language_code = language_code.replace("-IN", "")
-    elif language_code.contains("es"):
+    elif "es" in language_code:
         voice_name = "es-ES-Wavenet-B"
-    elif language_code.contains("fr"):
+    elif "fr" in language_code.contains("fr"):
         voice_name = "fr-FR-Wavenet-B"
-    elif language_code.contains("de"):
+    elif "de" in language_code:
         voice_name = "de-DE-Wavenet-B"
-    elif language_code.contains("ja"):
+    elif "ja" in language_code:
         voice_name = "ja-JP-Wavenet-B"
-    elif language_code.contains("ko"):
+    elif "ko" in language_code:
         voice_name = "ko-KR-Wavenet-B"
-    elif language_code.contains("pt"):
+    elif "pt" in language_code:
         voice_name = "pt-PT-Wavenet-B"
-    elif language_code.contains("it"):
+    elif "it" in language_code:
         voice_name = "it-IT-Wavenet-B"
-    elif language_code.contains("ru"):
+    elif "ru" in language_code:
         voice_name = "ru-RU-Wavenet-B"
-    elif language_code.contains("zh"):
+    elif "zh" in language_code:
         voice_name = "zh-CN-Wavenet-B"
     else:
         voice_name = "en-US-Wavenet-B"  # Default to English US if not found
