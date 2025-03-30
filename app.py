@@ -133,7 +133,7 @@ def app():
 
             # Detect language
             st.session_state.detected_language = detect_language_from_text(user_message) # Pass the right token
-
+            st.info(f"detectedlng : {st.session_state.detected_language}" )
             # Call Dialogflow API
             dialogflow_response = call_dialogflow_api(
                 user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token

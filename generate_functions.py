@@ -326,7 +326,7 @@ def call_dialogflow_api(user_message, session_id, language_code):
     client = dialogflow.SessionsClient()
     session = f"{PARENT}/agents/{AGENT_ID}/sessions/{session_id}"
     text_input = dialogflow.TextInput(text=user_message)
-    query_input = dialogflow.QueryInput(text=text_input)
+    query_input = dialogflow.QueryInput(text=text_input,  language_code=language_code.split('-')[0])
     try:
         response = client.detect_intent(
             request={"session": session, "query_input": query_input}
