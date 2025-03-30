@@ -250,6 +250,8 @@ def translate_text(text, to_language):
         to_language (str): The target language code.
         token (str): The bearer token for API authentication.
     """
+    if to_language == st.session_state.detected_language: 
+        return text
     client = translate_v3.TranslationServiceClient()
     try:
         response = client.translate_text(
@@ -257,7 +259,7 @@ def translate_text(text, to_language):
             target_language_code=to_language,
             parent=PARENT,
             mime_type="text/plain",
-            source_language_code="en-US",
+            source_language_code="en-US", 
         )
         return response.translations[0].translated_text
     except Exception as e:
@@ -298,16 +300,21 @@ def synthesize_speech(text, language_code):
     else:
         voice_name = "en-US-Wavenet-D"  # Default to English US if not found
 
-    input_text = texttospeech.SynthesisInput(ssml=text)
+    input_text = texttospeech.SynthesisInput(text=text)
     voice = texttospeech.VoiceSelectionParams(
         language_code=language_code, name=voice_name
     )
+    # audio_config = texttospeech.AudioConfig(
+    #     audio_encoding=texttospeech.AudioEncoding.LINEAR16,
+    #     effects_profile_id=["small-bluetooth-speaker-class-device"],
+    #     pitch=0,
+    #     speaking_rate=1,
+    # )
+
     audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.LINEAR16,
-        effects_profile_id=["small-bluetooth-speaker-class-device"],
-        pitch=0,
-        speaking_rate=1,
+        audio_encoding=texttospeech.AudioEncoding.MP3
     )
+
     try:
         response = client.synthesize_speech(
             input=input_text, voice=voice, audio_config=audio_config

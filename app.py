@@ -159,14 +159,15 @@ def app():
                     full_response_for_audio = " ".join(all_text_responses)
 
                     # Remove links, "Source" text, and quotes before synthesizing speech
+                    
                     text_to_synthesize = remove_links_source_and_quotes(full_response_for_audio)
-
+                    st.Info(f"Synthesize: {text_to_synthesize}")
                     audio_content = synthesize_speech(
                         text_to_synthesize, st.session_state.detected_language # Pass the right token
                     )
                     if audio_content:
                         audio_bytes = base64.b64decode(audio_content)
-                        st.audio(audio_bytes, format="audio/wav", start_time=0, )
+                        st.audio(audio_bytes, format="audio/wav", start_time=0)
             else:
                 full_response = "Sorry, I couldn't understand that."
                 message_placeholder.markdown(full_response)
