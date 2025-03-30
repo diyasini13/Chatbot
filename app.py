@@ -64,7 +64,7 @@ def app():
                     
                 if len(bot_responses) == 0:
                     full_response = "Sorry, I couldn't understand that."
-                message_placeholder.markdown(full_response)
+                message_placeholder.markdown(f"[{st.session_state.detected_language}] {full_response}")
 
                 # Synthesize speech and play automatically
                 if all_text_responses:
@@ -82,7 +82,7 @@ def app():
                         st.audio(audio_content, format="audio/mp3", start_time=0, autoplay=True)
             else:
                 full_response = "Sorry, I couldn't understand that."
-                message_placeholder.markdown(full_response)
+                message_placeholder.markdown(f"[{st.session_state.detected_language}] {full_response}")
                 audio_content = synthesize_speech(
                             full_response, st.session_state.detected_language # Pass the right token
                         )
