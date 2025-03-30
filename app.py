@@ -4,6 +4,7 @@ import streamlit as st
 import base64
 from generate_functions import generate_session_id, detect_language_from_text, call_dialogflow_api, translate_text, synthesize_speech, remove_links_source_and_quotes
 import auth_token
+import os
 
 # --- Configuration ---
 PROJECT_ID = "heroprojectlivedemo"
@@ -12,7 +13,6 @@ LOCATION = "global"
 
 # --- Streamlit App ---
 def app(): 
-    
     st.title("Google Agent")
 
     # Initialize session state variables
@@ -47,20 +47,24 @@ def app():
                 user_message, st.session_state.session_id, st.session_state.detected_language # Pass the right token
             )
 
-            
-
 
             if dialogflow_response and dialogflow_response["queryResult"]:
                 bot_responses = dialogflow_response["queryResult"]["responseMessages"]
                 all_text_responses = []
                 for response in bot_responses:
-                    if response["text"]:
-                        text_response = response["text"]["text"][0]
-                        translated_text = translate_text(
-                            text_response, st.session_state.detected_language # Pass the right token
-                        )
-                        all_text_responses.append(translated_text)
-                        full_response += translated_text + " "
+                    try:
+                        if response["text"]:
+                            text_response = response["text"]["text"][0]
+                            translated_text = translate_text(
+                                text_response, st.session_state.detected_language # Pass the right token
+                            )
+                            all_text_responses.append(translated_text)
+                            full_response += translated_text + " "
+                        else:
+                            st.info(f"Response was: {response}")
+                            full_response = "Sorry, I couldn't understand that."
+                    except Exception as e:
+                        st.info(f"Could not process reponse: {e}")
                 message_placeholder.markdown(full_response)
 
                 # Synthesize speech and play automatically
